@@ -15,4 +15,6 @@ RUN groupmod -o -g ${PGID} www-data && \
 WORKDIR /app
 COPY ./webroot /app
 
+RUN chown -R ${PGID}:${PUID} /app
+
 RUN make /bin/composer
