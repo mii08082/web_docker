@@ -15,7 +15,12 @@ docker-compose exec database bash -c 'mysql -uroot -ppassword'
 ## appログイン
 docker-compose exec app ash
 
+## migrate実行
+docker-compose exec app php blog/artisan migrate
+docker-compose exec --user 1000 app php blog/artisan make:migration create_user_profile_table3
 
+## Controller作成
+docker-compose exec  --user 1000 app php blog/artisan make:controller RegistrationController
 
 ## アクセス
 http://localhost:10088/
@@ -36,14 +41,17 @@ docker-compose exec app php blog/artisan migrate実行時下記エラーが出�
     681▕         }
     682▕
 ```
+下記コマンド実行する
+```
 docker-compose exec app php blog/artisan key:generate
 docker-compose exec app php blog/artisan cache:clear
 docker-compose exec app php blog/artisan route:clear
 docker-compose exec app php blog/artisan config:clear
 docker-compose exec app php blog/artisan view:clear
 docker-compose exec app php blog/artisan migrate
-
+```
 このようになれば成功
+```
 $ docker-compose exec app php blog/artisan migrate
 Migration table created successfully.
 Migrating: 2014_10_12_000000_create_users_table
@@ -54,3 +62,4 @@ Migrating: 2019_08_19_000000_create_failed_jobs_table
 Migrated:  2019_08_19_000000_create_failed_jobs_table (41.75ms)
 Migrating: 2021_01_24_080938_create_items_table
 Migrated:  2021_01_24_080938_create_items_table (19.35ms)
+```
